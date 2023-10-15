@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router(); 
 
-router.get('/ping', (req, res)=>{
-    res.json({pong: true});
-});
+//const usuarioController = require('./controllers/UsuarioController');
+
+//router.get('/Usuarios', usuarioController.getAll);
 
 module.exports = router;
