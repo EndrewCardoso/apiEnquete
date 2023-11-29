@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const con = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -8,7 +8,7 @@ const con = mysql.createConnection({
 });
 
 con.connect((error)=> {
-    if (error) { throw error.stack; }
+    if (error) throw error;
     console.log(`Banco ${process.env.DB_NAME} conectado com sucesso.`);
 });
 
