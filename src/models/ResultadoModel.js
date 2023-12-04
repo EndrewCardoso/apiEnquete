@@ -1,9 +1,10 @@
 const db = require('../db')
 
-const get = async ()=> {
+const getByPerguntaId = async (perguntaId)=> {
     return new Promise((resolve, reject)=> {
-        db.query('SELECT * FROM resultados', (error, results)=> {
-            if(error){ reject(error); return; }
+        db.query('SELECT resposta FROM resultados WHERE pergunta_id = ?', [perguntaId], 
+        (error, results)=> {
+            if (error) { reject(error); return; }
             resolve(results);
         });
     });
@@ -19,6 +20,6 @@ const save = async (perguntaId, resposta)=> {
 }
 
 module.exports = {
-    get,
+    getByPerguntaId,
     save
 }

@@ -1,19 +1,12 @@
 const resultadoModel = require('../models/ResultadoModel');
 
-const get = async (req, res)=> {
-    let resultados = await resultadoModel.get();
+const getByPerguntaId = async (req, res)=> {
     
+    let perguntaId = req.body.perguntaId;
+    let lstResultados = await resultadoModel.getByPerguntaId(perguntaId);
     let content = {error: '', result: []};
-    if (resultados) {
-        for (resultado of resultados) {
-            content.result.push({
-                id: resultado.id,
-                resposta: resultado.resposta,
-                pergunta: resultado.pergunta_id,
-                dtCadastro: resultado.dtCadastro
-            });
-        }
-        content.result = resultados;
+    if (lstResultados) {
+        content.result = lstResultados;
     }
 
     res.json(content);
@@ -36,6 +29,6 @@ const save = async (req, res)=> {
 }
 
 module.exports = {
-    get,
+    getByPerguntaId,
     save
 }

@@ -22,9 +22,36 @@ const getMaiorCodigo = ()=> {
         });
     });
 }
-const save = (titulo, descricao, usuarioId)=> {
+const getByUsuarioId = (usuarioId) => {
+    return new Promise((resolve, reject)=> {
+        db.query('SELECT * FROM perguntas WHERE usuario_id = ?', [usuarioId], 
+        (error, results)=> {
+            if(error){ reject(error); return; }
+            resolve(results);
+        });
+    });
+}
+const save = (codigo, titulo, descricao, usuarioId) => {
     return new Promise((resolve, reject)=>{
-        db.query('INSERT INTO usuarios (codigo, titulo, descricao, dtCadastro usuarioId,) VALUES (?, ?, ?, NOW(), ?)', [1, titulo, descricao, usuarioId], 
+        db.query('INSERT INTO perguntas (codigo, titulo, descricao, dtCadastro, usuario_id) VALUES (?, ?, ?, NOW(), ?)', [codigo, titulo, descricao, usuarioId], 
+        (error, results) => {
+            if (error) { reject(error); return; }
+            resolve(results.insertId);
+        });
+    });
+}
+const update = (titulo, descricao, usuarioId, id) => {
+    return new Promise((resolve, reject)=>{
+        db.query('UPDATE perguntas SET titulo = ?, descricao = ?, usuario_id = ? WHERE id = ?', [titulo, descricao, usuarioId, id], 
+        (error, results) => {
+            if (error) { reject(error); return; }
+            resolve(results.insertId);
+        });
+    });
+}
+const remove = (id) => {
+    return new Promise((resolve, reject)=>{
+        db.query('DELETE FROM perguntas WHERE id = ?', [id], 
         (error, results) => {
             if (error) { reject(error); return; }
             resolve(results.insertId);
@@ -35,5 +62,8 @@ const save = (titulo, descricao, usuarioId)=> {
 module.exports = {
     getByCodigo,
     getMaiorCodigo,
-    save
+    getByUsuarioId,
+    save,
+    update,
+    remove
 }

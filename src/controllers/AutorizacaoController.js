@@ -6,15 +6,14 @@ const logar = async (req, res)=> {
     let email = req.body.email;
     let senha = req.body.senha;
     
-    let content = {error:'', result:[]};
+    let content = {error:'', result:{}, token:''};
     if (email && senha) {
         let usuario = await usuarioModel.getUser(email, senha);
         if (usuario) {
             const token = jwt.sign({name: usuario.nome}, process.env.SECRET);
 
             content.result = usuario;
-            // content.result = token;
-
+            content.token = token;
             console.log(content);
         }
         else{
@@ -28,13 +27,12 @@ const logar = async (req, res)=> {
 };
 
 const verificarToken = async (req, res, next) => {
-        
-    const tokenHeader = req.tokenHeader['authorization'];
-    const token = tokenHeader && tokenHeader.split(' ')[1];
+    
+    const token = req.header('authorization');
 
     if (token) {
         require('dotenv').config();
-        jwt.verify(token, SECRET);
+        jwt.verify(token, process.env.SECRET);
         next();
     } else {
         return false;

@@ -29,9 +29,9 @@ const getUser = (email, senha)=> {
         });
     });
 }
-const save = (nome, apelido, senha, email)=> {
+const save = (nome, senha, email)=> {
     return new Promise((resolve, reject)=>{
-        db.query('INSERT INTO usuarios (nome, apelido, senha, email, dtCadastro) VALUES (?, ?, ?, ?, NOW())', [nome, apelido, senha, email], 
+        db.query('INSERT INTO usuarios (nome, senha, email, dtCadastro) VALUES (?, ?, ?, NOW())', [nome, senha, email], 
         (error, results) => {
             if (error) { reject(error); return; }
             resolve(results.insertId);
